@@ -16,7 +16,7 @@ module.exports = async function handler(req, res) {
     res.setHeader("Cache-Control", "no-store");
     const data = await getBootstrapData(seedData, session);
     res.end(JSON.stringify({
-      app: "Instalacoes Sarter",
+      app: "Sarter Service Provider",
       admin: { email: adminUser.email, role: adminUser.role },
       data
     }));
