@@ -1,65 +1,77 @@
-# Deploy do Sarter Service Provider no Vercel com Supabase
+# Deploy do Sarter Service Provider
 
 URL desejada: `https://sarter.service.vercel.app`
 
-## 1. Criar o banco
+## 1. Supabase
 
-1. Acesse o Supabase e crie um projeto.
-2. Abra `SQL Editor`.
-3. Se o banco for novo, execute o conteúdo de `database/schema.sql`.
-4. Se o banco já existir com a versão antiga, execute `database/upgrade_sarter_service_provider.sql`.
-5. Em banco novo, execute também o conteúdo de `database/seeds.sql`.
+Para banco novo:
 
-## 2. Pegar as chaves
+1. Abra o Supabase.
+2. Entre no projeto do sistema.
+3. Vá em `SQL Editor`.
+4. Rode o conteúdo de `database/schema.sql`.
+5. Rode o conteúdo de `database/seeds.sql`.
 
-No Supabase, abra `Project Settings > API` e copie:
+Para banco que já estava em uso:
 
-- `Project URL`
-- `service_role key`
+1. Abra `SQL Editor`.
+2. Rode `database/migrations/20260513_operational_updates.sql`, se ainda não rodou.
+3. Rode `database/migrations/20260515_service_provider_updates.sql`.
+4. Rode `database/migrations/20260513_security_hardening.sql`, se ainda não rodou.
 
-Use a `service_role key` somente no backend/Vercel. Nunca coloque essa chave no `app.js` ou em código visível no navegador.
+A migração de `20260515` cria os campos novos de agendamento: horário, placa, modelo, tipo `Retirada`, e a tabela `finance_expenses` para despesas fixas e variáveis.
 
-## 3. Configurar variáveis no Vercel
+## 2. Variáveis no Vercel
 
-No projeto do Vercel:
-
-1. Abra `Settings`.
-2. Entre em `Environment Variables`.
-3. Cadastre:
+No projeto `sistema-modulos-veiculares` da Vercel, abra `Settings > Environment Variables` e cadastre:
 
 ```text
-SUPABASE_URL=Project URL do Supabase
+SUPABASE_URL=URL do projeto Supabase
 SUPABASE_SERVICE_ROLE_KEY=service_role key do Supabase
+SESSION_SECRET=uma frase/senha longa para assinar sessoes
 ADMIN_EMAIL=admin@sarter.local
 ADMIN_INITIAL_PASSWORD=Sarter@123
 ```
 
-Depois clique em `Redeploy`.
+Use a chave `service_role` somente no Vercel. Não coloque essa chave no frontend.
 
-Para o problema de login por e-mail: mantenha `ADMIN_EMAIL` sem espaços e em minúsculas. O sistema também normaliza o e-mail digitado, então ` ADMIN@SARTER.LOCAL ` passa a validar como `admin@sarter.local`.
+Depois de salvar variáveis, faça um novo deploy.
 
-## 4. Publicar
+## 3. Vercel
 
-Você pode publicar pelo GitHub:
+O projeto correto no Vercel é `sistema-modulos-veiculares`.
 
-1. Suba a pasta `sistema-modulos-veiculares` para um repositório.
-2. No Vercel, clique em `Add New > Project`.
-3. Importe o repositório.
-4. Confirme que o diretório raiz é `sistema-modulos-veiculares`, se o repositório tiver outras pastas.
-5. Clique em `Deploy`.
+Fluxo seguro:
 
-Para usar o domínio `sarter.service.vercel.app`, abra o projeto na Vercel, vá em `Settings > Domains`, adicione `sarter.service.vercel.app` e siga a validação de DNS indicada pela Vercel. Depois que o domínio estiver válido, faça um novo deploy.
+```bash
+npm run check
+npm run build
+npx vercel --scope map-tech-s-projects
+```
 
-## 5. Como os testes com amigos funcionam
+Quando a versão estiver validada:
 
-Quando as variáveis `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` estiverem configuradas no Vercel, o frontend carrega os dados de `/api/bootstrap` e grava clientes, prestadores, agendamentos e estoque pelas rotas `api/`.
+```bash
+npx vercel deploy --prod --scope map-tech-s-projects
+```
 
-No PC, se o Supabase não estiver configurado, o sistema continua funcionando com dados locais no navegador.
+## 4. Domínio
 
-## Passo a passo curto para atualizar produção
+Para usar `sarter.service.vercel.app`:
 
-1. No Supabase, rode `database/upgrade_sarter_service_provider.sql`.
-2. No Vercel, confira as variáveis `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_EMAIL` e `ADMIN_INITIAL_PASSWORD`.
-3. Suba os arquivos no GitHub conectado ao projeto.
-4. No Vercel, faça `Redeploy`.
-5. Abra o sistema, entre com o admin e crie os acessos no menu `Acessos`, marcando as abas permitidas para cada e-mail.
+1. Abra o projeto `sistema-modulos-veiculares` no Vercel.
+2. Vá em `Settings > Domains`.
+3. Adicione `sarter.service.vercel.app`.
+4. Siga a validação indicada pela Vercel.
+5. Faça um novo deploy depois que o domínio estiver válido.
+
+## 5. Acessos
+
+Na aba `Acessos`, o administrador define:
+
+- perfil do usuário;
+- empresas permitidas;
+- abas que aparecerão no menu;
+- se o acesso fica ativo ou inativo.
+
+O e-mail é normalizado para minúsculas antes de salvar e antes do login. Para usuários que não são Admin, selecione pelo menos uma empresa e uma aba.

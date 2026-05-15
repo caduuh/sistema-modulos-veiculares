@@ -6,6 +6,19 @@ CREATE TABLE admins (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE app_accesses (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('admin', 'manager', 'technician')),
+  CONSTRAINT app_accesses_email_format_check CHECK (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
+  allowed_views JSONB NOT NULL DEFAULT '[]'::jsonb,
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 CREATE TABLE clients (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_name TEXT NOT NULL,
@@ -16,8 +29,17 @@ CREATE TABLE clients (
   address TEXT NOT NULL,
   status TEXT NOT NULL CHECK (status IN ('POC', 'Cliente ativo', 'Contrato fechado')),
   fleet_size INTEGER NOT NULL DEFAULT 0,
+  installed_modules INTEGER NOT NULL DEFAULT 0,
+  company_type TEXT NOT NULL DEFAULT 'Padrao',
+  exclusive BOOLEAN NOT NULL DEFAULT false,
   notes TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE app_access_clients (
+  access_id UUID NOT NULL REFERENCES app_accesses(id) ON DELETE CASCADE,
+  client_id UUID NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
+  PRIMARY KEY (access_id, client_id)
 );
 
 CREATE TABLE providers (
@@ -28,6 +50,8 @@ CREATE TABLE providers (
   city TEXT NOT NULL,
   type TEXT NOT NULL CHECK (type IN ('Equipe própria', 'Terceirizado')),
   availability TEXT NOT NULL,
+  install_value NUMERIC(12,2) NOT NULL DEFAULT 0,
+  maintenance_value NUMERIC(12,2) NOT NULL DEFAULT 0,
   contact TEXT NOT NULL,
   agenda TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -44,11 +68,16 @@ CREATE TABLE services (
   vehicle_plate TEXT,
   vehicle_model TEXT,
   installation_type TEXT NOT NULL,
+  custom_installation_type TEXT,
   km NUMERIC(12,2) NOT NULL DEFAULT 0,
   km_value NUMERIC(12,2) NOT NULL DEFAULT 0,
   toll NUMERIC(12,2) NOT NULL DEFAULT 0,
   install_value NUMERIC(12,2) NOT NULL DEFAULT 0,
   provider_paid NUMERIC(12,2) NOT NULL DEFAULT 0,
+  gasoline NUMERIC(12,2) NOT NULL DEFAULT 0,
+  car_maintenance NUMERIC(12,2) NOT NULL DEFAULT 0,
+  fixed_salary NUMERIC(12,2) NOT NULL DEFAULT 0,
+  expenses NUMERIC(12,2) NOT NULL DEFAULT 0,
   notes TEXT,
   status TEXT NOT NULL CHECK (status IN ('Agendado', 'Em andamento', 'Finalizado', 'Cancelado')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -58,21 +87,10 @@ CREATE TABLE finance_expenses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   type TEXT NOT NULL CHECK (type IN ('Despesa fixa', 'Despesa variável')),
   category TEXT NOT NULL,
-  amount NUMERIC(12,2) NOT NULL CHECK (amount >= 0),
+  amount NUMERIC(12,2) NOT NULL DEFAULT 0,
   due_date DATE NOT NULL,
-  status TEXT NOT NULL CHECK (status IN ('Pendente', 'Pago')) DEFAULT 'Pendente',
+  status TEXT NOT NULL DEFAULT 'Pendente' CHECK (status IN ('Pendente', 'Pago', 'Atrasado')),
   notes TEXT,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-
-CREATE TABLE access_users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  email TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  role TEXT NOT NULL,
-  permissions TEXT[] NOT NULL DEFAULT '{}',
-  active BOOLEAN NOT NULL DEFAULT true,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
@@ -96,6 +114,7 @@ CREATE TABLE poc_visits (
 CREATE TABLE stock_movements (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   movement_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  client_id UUID REFERENCES clients(id),
   region TEXT NOT NULL,
   type TEXT NOT NULL CHECK (type IN ('Entrada', 'Saída', 'Entregue', 'Retirado na matriz')),
   quantity INTEGER NOT NULL CHECK (quantity > 0),
@@ -108,4 +127,3 @@ CREATE INDEX idx_services_client_id ON services(client_id);
 CREATE INDEX idx_services_provider_id ON services(provider_id);
 CREATE INDEX idx_stock_region ON stock_movements(region);
 CREATE INDEX idx_finance_expenses_due_date ON finance_expenses(due_date);
-CREATE INDEX idx_access_users_email ON access_users(email);

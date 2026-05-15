@@ -2,28 +2,23 @@
 
 ## Sarter Service Provider
 
-Repo: `C:\Users\Carlos Eduardo\Desktop\bot_eth\01-apps-web\sistema-modulos-veiculares`
-Deploy: Vercel
+Repo: `https://github.com/caduuh/sistema-modulos-veiculares.git`
+Deploy atual: `https://sistema-modulos-veiculares.vercel.app`
 URL desejada: `https://sarter.service.vercel.app`
-Vercel: a configurar/confirmar manualmente
-Supabase project ref: a configurar/confirmar
-Ambiente atual: producao quando variaveis estiverem no Vercel
-Banco usa: Supabase via backend com `SUPABASE_SERVICE_ROLE_KEY`
+Vercel project: `sistema-modulos-veiculares`
+Vercel scope: `map-tech-s-projects`
 
 ## Regras
 
-- Banco: Supabase
-- Nao editar producao direto pelo dashboard
-- Toda alteracao de banco deve ir em `supabase/migrations`
-- Sempre incluir RLS + policies + grants explicitos
-- Nunca expor `SUPABASE_SERVICE_ROLE_KEY` no frontend
+- Não editar nem publicar pelo projeto antigo `project-77km5`.
+- Banco: Supabase via backend serverless.
+- Toda alteração de banco deve ficar em `database/migrations`.
+- Nunca expor `SUPABASE_SERVICE_ROLE_KEY` no frontend.
 
-## Ambientes Vercel
-
-- preview/staging: usar variaveis de staging e Supabase staging/branch
-- production: usar variaveis de producao e Supabase de producao
-
-## Variaveis esperadas
+## Variáveis esperadas no Vercel
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
+- `SESSION_SECRET`
+- `ADMIN_EMAIL`
+- `ADMIN_INITIAL_PASSWORD`

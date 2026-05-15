@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "check": "node --check app.js && node --check server.js && node --check api/bootstrap.js && node --check api/auth/login.js && node --check api/clients.js && node --check api/providers.js && node --check api/services.js && node --check api/stock-movements.js && node --check src/backend/db/supabase.js && node --check src/backend/http.js && node --check src/backend/repositories/opsRepository.js"
+    "build": "node scripts/build.js",
+    "backup:supabase": "node scripts/backup-supabase.js",
+    "check": "node --check app.js && node --check server.js && node --check api/bootstrap.js && node --check api/accesses.js && node --check api/auth/login.js && node --check api/clients.js && node --check api/providers.js && node --check api/services.js && node --check api/finance-expenses.js && node --check api/stock-movements.js && node --check scripts/backup-supabase.js && node --check src/backend/auth/session.js && node --check src/backend/db/supabase.js && node --check src/backend/http.js && node --check src/backend/repositories/opsRepository.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8"

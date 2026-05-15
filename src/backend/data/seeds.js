@@ -6,10 +6,10 @@ const adminUser = {
 
 const seedData = {
   clients: [
-    { company: "Transvale Logística", status: "Contrato fechado", fleet: 86, region: "MG" },
-    { company: "Frota Minas Alimentos", status: "Cliente ativo", fleet: 42, region: "MG" },
-    { company: "Expresso Centro-Oeste", status: "POC", fleet: 24, region: "GO" },
-    { company: "Rota Sul Distribuição", status: "POC", fleet: 18, region: "RS" }
+    { id: 1, company: "Facss", status: "Contrato fechado", fleet: 86, installedModules: 40, companyType: "Facss", region: "MG" },
+    { id: 2, company: "Frota Minas Alimentos", status: "Cliente ativo", fleet: 42, installedModules: 18, companyType: "Padrao", region: "MG" },
+    { id: 3, company: "Expresso Centro-Oeste", status: "POC", fleet: 24, installedModules: 8, companyType: "Padrao", region: "GO" },
+    { id: 4, company: "Rota Sul Distribuição", status: "POC", fleet: 18, installedModules: 5, companyType: "Padrao", region: "RS" }
   ],
   providers: [
     { name: "Equipe BH Norte", type: "Equipe própria", availability: "Disponível", region: "MG" },

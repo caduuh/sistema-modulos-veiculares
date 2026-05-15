@@ -1,4 +1,4 @@
-const { createService } = require("../src/backend/repositories/opsRepository");
+const { createFinanceExpense } = require("../src/backend/repositories/opsRepository");
 const { requireSession } = require("../src/backend/auth/session");
 const { sendJson, readJson, sendError } = require("../src/backend/http");
 
@@ -9,8 +9,8 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const session = requireSession(req, "services");
-    sendJson(res, 201, await createService(await readJson(req), session));
+    const session = requireSession(req, "finance");
+    sendJson(res, 201, await createFinanceExpense(await readJson(req), session));
   } catch (error) {
     sendError(res, error);
   }

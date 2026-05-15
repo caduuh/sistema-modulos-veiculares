@@ -2,7 +2,7 @@
 
 ## Dashboard
 
-Cards informativos com atendimentos em andamento, POCs, contratos, receita, despesas, lucro, prestadores disponíveis, estoque e calendário de atendimentos.
+Cards informativos com instalações em andamento, manutenções, POCs, contratos, faturamento, lucro, prestadores disponíveis, estoque e calendário de instalações.
 
 ## Clientes
 
@@ -10,15 +10,15 @@ Cadastro completo de empresa, responsável, telefone, e-mail, CNPJ, endereço, s
 
 ## Prestadores
 
-Separação entre equipe própria e terceirizados, com região, estado, cidade, disponibilidade, contato e agenda.
+Separação entre equipe própria e terceirizados, com região, estado, cidade, disponibilidade, valores, contato e agenda.
 
-## Agendamentos
+## Serviços
 
-Cadastro operacional de instalação, manutenção e retirada com cliente, prestador, endereço do atendimento, data, horário, placa, modelo do veículo, tipo de instalação em texto livre, custos, observações e status.
+Cadastro operacional de instalação e manutenção com cliente, prestador, região, data, tipo de instalação, custos, observações e status.
 
 ## Financeiro
 
-Receita vinda dos agendamentos, lançamento de despesas fixas e variáveis, vencimentos para alertas e cálculo de lucro por receita menos despesa.
+Gráficos financeiros por cliente e prestador, totais por região, lucro mensal e lucro por contrato.
 
 ## Fechamento Mensal
 
@@ -30,7 +30,7 @@ Controle de início/fim do período de teste, módulos instalados, histórico de
 
 ## Calendário Operacional
 
-Visão mensal com agendamentos e drag and drop para reagendamento.
+Visão mensal com serviços agendados e drag and drop para reagendamento.
 
 ## Estoque
 

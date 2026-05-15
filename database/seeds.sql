@@ -3,11 +3,11 @@
 INSERT INTO admins (email, password_hash, role)
 VALUES ('admin@sarter.local', 'CHANGE_ME_HASH_Sarter@123', 'ADMIN');
 
-INSERT INTO clients (company_name, responsible_name, phone, email, cnpj, address, status, fleet_size, notes)
+INSERT INTO clients (company_name, responsible_name, phone, email, cnpj, address, status, fleet_size, installed_modules, company_type, notes)
 VALUES
-('Transvale Logística', 'Marina Rocha', '(31) 98810-4420', 'marina@transvale.com.br', '12.345.678/0001-90', 'Contagem, MG', 'Contrato fechado', 86, 'Contrato nacional em expansão.'),
-('Frota Minas Alimentos', 'Rafael Dias', '(31) 99722-8810', 'rafael@frotaminas.com.br', '31.554.010/0001-12', 'Betim, MG', 'Cliente ativo', 42, 'Manutenção preventiva prioritária.'),
-('Expresso Centro-Oeste', 'Camila Torres', '(62) 99180-1100', 'camila@ecoeste.com.br', '08.117.222/0001-40', 'Goiânia, GO', 'POC', 24, 'POC com módulos plug and play.');
+('Facss', 'Marina Rocha', '(31) 98810-4420', 'marina@facss.com.br', '12.345.678/0001-90', 'Contagem, MG', 'Contrato fechado', 86, 40, 'Facss', 'Atendimento exclusivo.'),
+('Frota Minas Alimentos', 'Rafael Dias', '(31) 99722-8810', 'rafael@frotaminas.com.br', '31.554.010/0001-12', 'Betim, MG', 'Cliente ativo', 42, 18, 'Padrao', 'Manutenção preventiva prioritária.'),
+('Expresso Centro-Oeste', 'Camila Torres', '(62) 99180-1100', 'camila@ecoeste.com.br', '08.117.222/0001-40', 'Goiânia, GO', 'POC', 24, 8, 'Padrao', 'POC com módulos plug and play.');
 
 INSERT INTO providers (name, region, state, city, type, availability, install_value, maintenance_value, contact, agenda)
 VALUES
