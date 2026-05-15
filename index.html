@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sarter Service Provider</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <section id="loginScreen" class="login-screen">
+    <form id="loginForm" class="login-card">
+      <span class="brand-mark">SS</span>
+      <p class="eyebrow">Sarter Service Provider</p>
+      <h1>Acessar sistema</h1>
+      <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+      <label>Senha<input name="password" type="password" required autocomplete="current-password"></label>
+      <button class="primary" type="submit">Entrar</button>
+      <span class="muted">Acesso padrão: admin@sarter.local</span>
+    </form>
+  </section>
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">IS</span>
+      <div>
+        <strong>Sarter Service Provider</strong>
+        <small>sarter.service.vercel.app</small>
+      </div>
+    </div>
+    <nav id="nav" class="nav"></nav>
+    <button id="logout" class="ghost" type="button">Sair</button>
+    <button id="resetData" class="ghost danger" type="button">Restaurar dados demo</button>
+  </aside>
+
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Sarter Service Provider</p>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="top-actions">
+        <label class="search">
+          <span>Buscar</span>
+          <input id="globalSearch" type="search" placeholder="cliente, região, prestador">
+        </label>
+        <button id="printReport" class="secondary" type="button">PDF</button>
+        <button id="exportExcel" class="primary" type="button">Excel</button>
+      </div>
+    </header>
+
+    <section id="dashboard" class="view active">
+      <div id="metrics" class="metrics-grid"></div>
+      <div class="content-grid two">
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Agenda</p>
+              <h2>Calendário de instalações</h2>
+            </div>
+            <select id="calendarMode">
+              <option value="month">Mensal</option>
+              <option value="week">Semanal</option>
+            </select>
+          </div>
+          <div id="calendar" class="calendar"></div>
+        </section>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Operação</p>
+              <h2>Atendimentos próximos</h2>
+            </div>
+            <span id="todayAvailability" class="pill"></span>
+          </div>
+          <div id="upcomingServices" class="stack"></div>
+        </section>
+      </div>
+      <div class="content-grid three">
+        <section class="panel">
+          <p class="eyebrow">Financeiro</p>
+          <h2>Total por região</h2>
+          <div id="regionTotals" class="bars"></div>
+        </section>
+        <section class="panel">
+          <p class="eyebrow">Prestadores</p>
+          <h2>Disponibilidade hoje</h2>
+          <div id="providerHighlights" class="stack"></div>
+        </section>
+        <section class="panel">
+          <p class="eyebrow">Estoque</p>
+          <h2>Módulos por região</h2>
+          <div id="stockHighlights" class="stack"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="clients" class="view">
+      <div class="content-grid form-list">
+        <form id="clientForm" class="panel form">
+          <p class="eyebrow">Cadastro</p>
+          <h2>Clientes</h2>
+          <input type="hidden" name="id">
+          <label>Nome da empresa<input name="company" required></label>
+          <label>Responsável<input name="responsible" required></label>
+          <label>Telefone<input name="phone" required></label>
+          <label>E-mail<input name="email" type="email" required></label>
+          <label>CNPJ<input name="cnpj" required></label>
+          <label>Endereço<input name="address" required></label>
+          <label>Status<select name="status"><option>POC</option><option>Cliente ativo</option><option>Contrato fechado</option></select></label>
+          <label>Quantidade de veículos/frota<input name="fleet" type="number" min="0" required></label>
+          <label class="full">Observações<textarea name="notes" rows="4"></textarea></label>
+          <button class="primary" type="submit">Salvar cliente</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Base comercial</p>
+              <h2>Clientes cadastrados</h2>
+            </div>
+            <span id="clientCount" class="pill"></span>
+          </div>
+          <div id="clientsList" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="providers" class="view">
+      <div class="content-grid form-list">
+        <form id="providerForm" class="panel form">
+          <p class="eyebrow">Cadastro</p>
+          <h2>Prestadores</h2>
+          <input type="hidden" name="id">
+          <label>Nome<input name="name" required></label>
+          <label>Região<input name="region" required></label>
+          <label>Estado<input name="state" maxlength="2" required></label>
+          <label>Cidade<input name="city" required></label>
+          <label>Tipo<select name="type"><option>Equipe própria</option><option>Terceirizado</option></select></label>
+          <label>Disponibilidade<select name="availability"><option>Disponível</option><option>Agenda cheia</option><option>Folga</option><option>Em deslocamento</option></select></label>
+          <label>Contato<input name="contact" required></label>
+          <label class="full">Agenda/calendário<input name="agenda" placeholder="Seg-Sex 08:00-18:00"></label>
+          <button class="primary" type="submit">Salvar prestador</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Equipe própria e terceirizados</p>
+              <h2>Prestadores cadastrados</h2>
+            </div>
+            <div class="segmented">
+              <button class="active" data-provider-filter="Todos" type="button">Todos</button>
+              <button data-provider-filter="Equipe própria" type="button">Própria</button>
+              <button data-provider-filter="Terceirizado" type="button">Terceiros</button>
+            </div>
+          </div>
+          <div id="providersList" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="services" class="view">
+      <div class="content-grid form-list">
+        <form id="serviceForm" class="panel form">
+          <p class="eyebrow">Gestão</p>
+          <h2>Agendamentos</h2>
+          <input type="hidden" name="id">
+          <label>Cliente<select name="clientId" required></select></label>
+          <label>Prestador responsável<select name="providerId" required></select></label>
+          <label>Endereço do atendimento<input name="regionState" required></label>
+          <label>Data agendada<input name="date" type="date" required></label>
+          <label>Horário do atendimento<input name="time" type="time"></label>
+          <label>Placa do veículo<input name="vehiclePlate" placeholder="ABC1D23"></label>
+          <label>Modelo do veículo<input name="vehicleModel" placeholder="Ex.: Fiorino, Sprinter, HR"></label>
+          <label>Tipo<select name="serviceType"><option>Instalação</option><option>Manutenção</option><option>Retirada</option></select></label>
+          <label class="full">Tipo de instalação<input name="installationType" placeholder="Digite o tipo de instalação ou serviço" required></label>
+          <label>KM rodado<input name="km" type="number" step="0.1" required></label>
+          <label>Valor do KM<input name="kmValue" type="number" step="0.01" required></label>
+          <label>Pedágio<input name="toll" type="number" step="0.01" required></label>
+          <label>Receita do atendimento<input name="installValue" type="number" step="0.01" required></label>
+          <label>Valor pago ao prestador<input name="providerPaid" type="number" step="0.01" required></label>
+          <label>Status<select name="status"><option>Agendado</option><option>Em andamento</option><option>Finalizado</option><option>Cancelado</option></select></label>
+          <label class="full">Observações<textarea name="notes" rows="4"></textarea></label>
+          <div class="calc-box">
+            <span>Valor total</span><strong id="serviceTotalPreview">R$ 0,00</strong>
+            <span>Lucro</span><strong id="serviceProfitPreview">R$ 0,00</strong>
+          </div>
+          <button class="primary" type="submit">Salvar serviço</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Operacional e financeiro</p>
+              <h2>Agendamentos cadastrados</h2>
+            </div>
+            <div class="segmented">
+              <button class="active" data-service-filter="Todos" type="button">Todos</button>
+              <button data-service-filter="Instalação" type="button">Instalações</button>
+              <button data-service-filter="Manutenção" type="button">Manutenções</button>
+              <button data-service-filter="Retirada" type="button">Retiradas</button>
+            </div>
+          </div>
+          <div id="servicesList" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="finance" class="view">
+      <div id="financeCards" class="metrics-grid"></div>
+      <div class="content-grid form-list">
+        <form id="expenseForm" class="panel form">
+          <p class="eyebrow">Despesas</p>
+          <h2>Lançar despesa</h2>
+          <input type="hidden" name="id">
+          <label>Tipo<select name="type"><option>Despesa fixa</option><option>Despesa variável</option></select></label>
+          <label>Categoria<input name="category" placeholder="Salário, imposto, gasolina, manutenção" required></label>
+          <label>Valor<input name="amount" type="number" step="0.01" required></label>
+          <label>Vencimento<input name="dueDate" type="date" required></label>
+          <label>Status<select name="status"><option>Pendente</option><option>Pago</option></select></label>
+          <label class="full">Observação<textarea name="notes" rows="3"></textarea></label>
+          <button class="primary" type="submit">Salvar despesa</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Contas</p>
+              <h2>Despesas cadastradas</h2>
+            </div>
+            <span id="expenseCount" class="pill"></span>
+          </div>
+          <div id="expensesList" class="table-wrap"></div>
+        </section>
+      </div>
+      <div class="content-grid two">
+        <section class="panel"><p class="eyebrow">Receita</p><h2>Total por cliente</h2><div id="clientTotals" class="bars"></div></section>
+        <section class="panel"><p class="eyebrow">Despesas</p><h2>Total por tipo</h2><div id="expenseTotals" class="bars"></div></section>
+      </div>
+      <section class="panel">
+        <p class="eyebrow">Contratos</p>
+        <h2>Lucro por contrato</h2>
+        <div id="contractProfit" class="table-wrap"></div>
+      </section>
+    </section>
+
+    <section id="access" class="view">
+      <div class="content-grid form-list">
+        <form id="accessForm" class="panel form">
+          <p class="eyebrow">Acessos</p>
+          <h2>Criar acesso</h2>
+          <input type="hidden" name="id">
+          <label>Nome<input name="name" required></label>
+          <label>E-mail<input name="email" type="email" required></label>
+          <label>Senha<input name="password" type="password" minlength="6" required></label>
+          <label>Perfil<select name="role"><option>Administrador</option><option>Operação</option><option>Financeiro</option><option>Consulta</option></select></label>
+          <fieldset class="full permissions-grid">
+            <legend>Abas liberadas para este acesso</legend>
+            <label><input type="checkbox" name="permissions" value="dashboard" checked> Dashboard</label>
+            <label><input type="checkbox" name="permissions" value="clients" checked> Clientes</label>
+            <label><input type="checkbox" name="permissions" value="providers" checked> Prestadores</label>
+            <label><input type="checkbox" name="permissions" value="services" checked> Agendamentos</label>
+            <label><input type="checkbox" name="permissions" value="finance"> Financeiro</label>
+            <label><input type="checkbox" name="permissions" value="reports"> Fechamento</label>
+            <label><input type="checkbox" name="permissions" value="poc"> POC</label>
+            <label><input type="checkbox" name="permissions" value="calendarView" checked> Calendário</label>
+            <label><input type="checkbox" name="permissions" value="stock"> Estoque</label>
+            <label><input type="checkbox" name="permissions" value="access"> Acessos</label>
+          </fieldset>
+          <button class="primary" type="submit">Salvar acesso</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Permissões</p>
+              <h2>Acessos cadastrados</h2>
+            </div>
+            <span id="accessCount" class="pill"></span>
+          </div>
+          <div id="accessList" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="reports" class="view">
+      <section class="panel report" id="monthlyReport">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Fechamento mensal</p>
+            <h2>Relatório de Maio/2026</h2>
+          </div>
+          <div class="top-actions">
+            <button id="reportPrint" class="secondary" type="button">Exportar PDF</button>
+            <button id="reportExcel" class="primary" type="button">Exportar Excel</button>
+          </div>
+        </div>
+        <div id="reportSummary" class="metrics-grid"></div>
+        <div id="reportTable" class="table-wrap"></div>
+      </section>
+    </section>
+
+    <section id="poc" class="view">
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Controle de POC</p>
+            <h2>Clientes em período de teste</h2>
+          </div>
+          <button id="convertSelectedPoc" class="primary" type="button">Converter POC selecionado</button>
+        </div>
+        <div id="pocList" class="cards-grid"></div>
+      </section>
+    </section>
+
+    <section id="calendarView" class="view">
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Calendário operacional</p>
+            <h2>Arraste um serviço para reagendar</h2>
+          </div>
+          <span class="pill">Mensal e semanal no dashboard</span>
+        </div>
+        <div id="dragCalendar" class="calendar drag"></div>
+      </section>
+    </section>
+
+    <section id="stock" class="view">
+      <div class="content-grid form-list">
+        <form id="stockForm" class="panel form">
+          <p class="eyebrow">Estoque</p>
+          <h2>Entradas e saídas</h2>
+          <label>Região<input name="region" required></label>
+          <label>Tipo<select name="type"><option>Entrada</option><option>Saída</option><option>Entregue</option><option>Retirado na matriz</option></select></label>
+          <label>Quantidade<input name="quantity" type="number" min="1" required></label>
+          <label>Responsável<input name="responsible" required></label>
+          <label class="full">Observação<textarea name="notes" rows="4"></textarea></label>
+          <button class="primary" type="submit">Registrar movimentação</button>
+        </form>
+        <section class="panel">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Controle logístico</p>
+              <h2>Estoque e movimentações</h2>
+            </div>
+            <span id="stockAvailable" class="pill"></span>
+          </div>
+          <div id="stockList" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
