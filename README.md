@@ -2,7 +2,9 @@
 
 Sistema interno web para controle de clientes, prestadores, agendamentos, financeiro, acessos e estoque de módulos veiculares.
 
-URL planejada: `https://sarter.service.vercel.app`
+URL atual: `https://sistema-modulos-veiculares.vercel.app`
+
+Nome exibido no sistema: `Sarter Service Provider`
 
 ## Rodar localmente
 

@@ -1,6 +1,8 @@
 # Deploy do Sarter Service Provider
 
-URL desejada: `https://sarter.service.vercel.app`
+URL atual: `https://sistema-modulos-veiculares.vercel.app`
+
+O app exibe `sarter.service.vercel.app` na lateral, mas a Vercel recusou esse alias nesta conta porque `*.service.vercel.app` está reservado para outro escopo.
 
 ## 1. Supabase
 
@@ -57,11 +59,11 @@ npx vercel deploy --prod --scope map-tech-s-projects
 
 ## 4. Domínio
 
-Para usar `sarter.service.vercel.app`:
+Para usar um domínio próprio, por exemplo `sarter.seudominio.com`:
 
 1. Abra o projeto `sistema-modulos-veiculares` no Vercel.
 2. Vá em `Settings > Domains`.
-3. Adicione `sarter.service.vercel.app`.
+3. Adicione o domínio desejado.
 4. Siga a validação indicada pela Vercel.
 5. Faça um novo deploy depois que o domínio estiver válido.
 
